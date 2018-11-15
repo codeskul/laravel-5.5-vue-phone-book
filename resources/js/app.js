@@ -7,8 +7,11 @@ Vue.use(VueRouter)
 
 let Myheader = require('./components/Myheader.vue');
 let Myfooter = require('./components/Myfooter.vue');
+
 let Home = require('./components/Home.vue');
 let About = require('./components/About.vue');
+
+
 
 const routes = [
     { path: '/home', component: Home },
@@ -16,7 +19,7 @@ const routes = [
   ]
 
   const router = new VueRouter({
-    mode: 'history',
+    // mode: 'history',
     routes 
   })
 

@@ -1,16 +1,18 @@
 <template>
+<div>
     <nav class="panel column is-offset-2 is-8">
         <p class="panel-heading">
             Vue Phonebook 
-            <button class="button is-link is-outlined">
-            Add New
+            <button @click="launchModel" class="button is-link is-outlined">
+                Add New
             </button>
+            
         </p>
         <div class="panel-block">
             <p class="control has-icons-left">
             <input class="input is-small" type="text" placeholder="search">
             <span class="icon is-small is-left">
-                <i class="fas fa-search" aria-hidden="true"></i>
+                <i class="fa fa-search" aria-hidden="true"></i>
             </span>
             </p>
         </div>
@@ -31,5 +33,31 @@
             </span>
             
         </a>
-        </nav>
+    </nav>
+
+    <Add :openModel='modelClass' @closeRequest='closeModel'></Add>
+</div>
 </template>
+
+<script>
+let Add = require('./Add.vue');
+export default {
+    components:{
+        Add
+    },
+    data(){
+        return{
+            modelClass : ''
+        }
+    },
+    methods:{
+        launchModel(){
+            console.log('model');
+            this.modelClass = 'is-active';
+        },
+        closeModel(){
+            this.modelClass = '';
+        }
+    }
+}
+</script>

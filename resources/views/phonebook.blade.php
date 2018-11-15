@@ -12,6 +12,7 @@
         <Myheader></Myheader>
         <div class="container">
             <router-view></router-view>    
+            {{-- <Add></Add> --}}
         </div>
         <Myfooter></Myfooter>
     </div>
