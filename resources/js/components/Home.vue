@@ -26,7 +26,7 @@
                 <i class="has-text-danger fa fa-trash" aria-hidden="true"></i>
             </span>
             <span class="panel-icon column is-1">
-                <i class="has-text-info fa fa-edit" aria-hidden="true"></i>
+                <i class="has-text-info fa fa-edit" @click="openUpdate(key)" aria-hidden="true"></i>
             </span>
             <span class="panel-icon column is-1">
                 <i class="has-text-primary fa fa-eye" @click="openShow(key)" aria-hidden="true"></i>
@@ -37,20 +37,23 @@
 
     <Add :openModel='modelClass' @closeRequest='closeModel'></Add>
     <Show :openModel='showActive' @closeRequest='closeModel'></Show>
+    <Update :openModel='updateActive' @closeRequest='closeModel'></Update>
 </div>
 </template>
 
 <script>
 let Add = require('./Add.vue');
 let Show = require('./Show.vue');
+let Update = require('./Update.vue');
 export default {
     components:{
-        Add,Show
+        Add,Show,Update
     },
     data(){
         return{
             modelClass : '',
             showActive : '',
+            updateActive:'',
             lists:{},
             errors:{}
         }
@@ -66,11 +69,15 @@ export default {
             this.modelClass = 'is-active';
         },
         closeModel(){
-            this.modelClass = this.showActive = '';
+            this.modelClass = this.showActive = this.updateActive = '';
         },
         openShow(key){
             this.$children[1].list = this.lists[key];
             this.showActive = 'is-active';
+        },
+        openUpdate(key){
+            this.$children[2].list = this.lists[key];
+            this.updateActive = 'is-active';
         }
     }
 }
