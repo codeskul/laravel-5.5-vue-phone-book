@@ -17,9 +17,9 @@
             </p>
         </div>
         
-        <a class="panel-block is-active">
+        <a class="panel-block is-active" v-for="item,key in lists">
             <div class="column is-9">
-                bulma
+               {{key}} - {{item.name}}
             </div>
             
             <span class="panel-icon column is-1">
@@ -47,8 +47,15 @@ export default {
     },
     data(){
         return{
-            modelClass : ''
+            modelClass : '',
+            lists:{},
+            errors:{}
         }
+    },
+    mounted(){
+        axios.post('/getData')
+            .then((response) => this.lists = response.data)
+            .catch((error) => this.errors = error.response.data.errors);
     },
     methods:{
         launchModel(){

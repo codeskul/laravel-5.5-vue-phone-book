@@ -8,6 +8,10 @@ use App\Http\Requests\PhonebookRequest;
 
 class PhonebookController extends Controller
 {
+    public function getData(){
+        return Phonebook::orderBy('name','ASC')->get();
+    }
+
     /**
      * Display a listing of the resource.
      *
