@@ -6,6 +6,9 @@
             <button @click="launchModel" class="button is-link is-outlined">
                 Add New
             </button>
+            <span class="is-pulled-right" v-if='loading'>
+                <i class="fa fa-refresh fa-spin fa-2x fa-fw" ></i>
+            </span>
             
         </p>
         <div class="panel-block">
@@ -23,7 +26,7 @@
             </div>
             
             <span class="panel-icon column is-1">
-                <i class="has-text-danger fa fa-trash" aria-hidden="true"></i>
+                <i class="has-text-danger fa fa-trash" @click="del(key,item.id)" aria-hidden="true"></i>
             </span>
             <span class="panel-icon column is-1">
                 <i class="has-text-info fa fa-edit" @click="openUpdate(key)" aria-hidden="true"></i>
@@ -55,7 +58,8 @@ export default {
             showActive : '',
             updateActive:'',
             lists:{},
-            errors:{}
+            errors:{},
+            loading:false
         }
     },
     mounted(){
@@ -78,6 +82,16 @@ export default {
         openUpdate(key){
             this.$children[2].list = this.lists[key];
             this.updateActive = 'is-active';
+        },
+        del(key,id){
+            
+            if(confirm("Are you sure?")){
+                this.loading = !this.loading
+                // console.log(`${key} ${id}`)
+                axios.delete(`/phonebook/${id}`)
+                .then((response) => {this.lists.splice(key,1); this.loading = !this.loading})
+                .catch((error) => this.errors = error.response.data.errors);
+            }
         }
     }
 }

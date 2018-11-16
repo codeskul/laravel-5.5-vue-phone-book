@@ -54,6 +54,7 @@ export default {
       errors:{}
     }
   },
+  
   methods:{
     close(){
       this.$emit('closeRequest')
