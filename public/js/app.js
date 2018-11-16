@@ -46360,16 +46360,32 @@ var Update = __webpack_require__(52);
             updateActive: '',
             lists: {},
             errors: {},
-            loading: false
+            loading: false,
+            searchQuery: '',
+            temp: ''
         };
     },
+
+    watch: {
+        searchQuery: function searchQuery() {
+            var _this = this;
+
+            if (this.searchQuery.length > 0) {
+                this.temp = this.lists.filter(function (item) {
+                    return item.name.toLowerCase().indexOf(_this.searchQuery.toLowerCase()) > -1;
+                });
+            } else {
+                this.temp = this.lists;
+            }
+        }
+    },
     mounted: function mounted() {
-        var _this = this;
+        var _this2 = this;
 
         axios.post('/getData').then(function (response) {
-            return _this.lists = response.data;
+            return _this2.lists = _this2.temp = response.data;
         }).catch(function (error) {
-            return _this.errors = error.response.data.errors;
+            return _this2.errors = error.response.data.errors;
         });
     },
 
@@ -46390,15 +46406,15 @@ var Update = __webpack_require__(52);
             this.updateActive = 'is-active';
         },
         del: function del(key, id) {
-            var _this2 = this;
+            var _this3 = this;
 
             if (confirm("Are you sure?")) {
                 this.loading = !this.loading;
                 // console.log(`${key} ${id}`)
                 axios.delete('/phonebook/' + id).then(function (response) {
-                    _this2.lists.splice(key, 1);_this2.loading = !_this2.loading;
+                    _this3.lists.splice(key, 1);_this3.loading = !_this3.loading;
                 }).catch(function (error) {
-                    return _this2.errors = error.response.data.errors;
+                    return _this3.errors = error.response.data.errors;
                 });
             }
         }
@@ -47177,9 +47193,35 @@ var render = function() {
               : _vm._e()
           ]),
           _vm._v(" "),
-          _vm._m(0),
+          _c("div", { staticClass: "panel-block" }, [
+            _c("p", { staticClass: "control has-icons-left" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.searchQuery,
+                    expression: "searchQuery"
+                  }
+                ],
+                staticClass: "input is-small",
+                attrs: { type: "text", placeholder: "search" },
+                domProps: { value: _vm.searchQuery },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.searchQuery = $event.target.value
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _vm._m(0)
+            ])
+          ]),
           _vm._v(" "),
-          _vm._l(_vm.lists, function(item, key) {
+          _vm._l(_vm.temp, function(item, key) {
             return _c("a", { staticClass: "panel-block is-active" }, [
               _c("div", { staticClass: "column is-9" }, [
                 _vm._v(
@@ -47255,20 +47297,8 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "panel-block" }, [
-      _c("p", { staticClass: "control has-icons-left" }, [
-        _c("input", {
-          staticClass: "input is-small",
-          attrs: { type: "text", placeholder: "search" }
-        }),
-        _vm._v(" "),
-        _c("span", { staticClass: "icon is-small is-left" }, [
-          _c("i", {
-            staticClass: "fa fa-search",
-            attrs: { "aria-hidden": "true" }
-          })
-        ])
-      ])
+    return _c("span", { staticClass: "icon is-small is-left" }, [
+      _c("i", { staticClass: "fa fa-search", attrs: { "aria-hidden": "true" } })
     ])
   }
 ]

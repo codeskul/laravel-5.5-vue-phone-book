@@ -13,14 +13,14 @@
         </p>
         <div class="panel-block">
             <p class="control has-icons-left">
-            <input class="input is-small" type="text" placeholder="search">
+            <input class="input is-small" type="text" v-model="searchQuery" placeholder="search">
             <span class="icon is-small is-left">
                 <i class="fa fa-search" aria-hidden="true"></i>
             </span>
             </p>
         </div>
         
-        <a class="panel-block is-active" v-for="item,key in lists">
+        <a class="panel-block is-active" v-for="item,key in temp">
             <div class="column is-9">
                {{key}} - {{item.name}}
             </div>
@@ -59,12 +59,26 @@ export default {
             updateActive:'',
             lists:{},
             errors:{},
-            loading:false
+            loading:false,
+            searchQuery: '',
+            temp:''
+        }
+    },
+    watch:{
+        searchQuery(){
+            if(this.searchQuery.length > 0){
+                this.temp = this.lists.filter((item) =>{
+                    return item.name.toLowerCase().indexOf(this.searchQuery.toLowerCase()) > -1
+                });
+            }
+            else{
+                this.temp = this.lists
+            }
         }
     },
     mounted(){
         axios.post('/getData')
-            .then((response) => this.lists = response.data)
+            .then((response) => this.lists = this.temp = response.data)
             .catch((error) => this.errors = error.response.data.errors);
     },
     methods:{
